@@ -4,4 +4,3 @@
 vendor
 vendor/*
 /config_*.xml
-/translations/*.php
