@@ -3,4 +3,4 @@
 .DS_Store
 vendor
 vendor/*
-/config_*.xml
+/config*.xml
