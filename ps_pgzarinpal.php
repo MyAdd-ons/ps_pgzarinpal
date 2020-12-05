@@ -35,7 +35,7 @@ class Prestashop_payment_gateway_zarinpal extends PaymentModule
         $this->name = 'prestashop_payment_gateway_zarinpal';
         $this->tab = 'payments_gateways';
         $this->version = '1.0.0';
-        $this->author = 'Arad Emertat';
+        $this->author = 'My addnns';
         $this->need_instance = 0;
         $this->bootstrap = true;
 
