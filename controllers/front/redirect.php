@@ -23,7 +23,7 @@
 *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
 */
-class Arademertat_payment_gateway_zarinpalRedirectModuleFrontController extends ModuleFrontController
+class Ps_pgzarinpalRedirectModuleFrontController extends ModuleFrontController
 {
     /**
      * Do whatever you have to before redirecting the customer on the website of your payment processor.
