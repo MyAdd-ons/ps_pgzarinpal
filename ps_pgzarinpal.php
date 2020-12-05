@@ -26,23 +26,23 @@
 
 defined('_PS_VERSION_') || exit;
 
-class Prestashop_payment_gateway_zarinpal extends PaymentModule
+class Ps_pgzaringpal extends PaymentModule
 {
     protected $config_form = false;
 
     public function __construct()
     {
-        $this->name = 'prestashop_payment_gateway_zarinpal';
+        $this->name = 'ps_pgzaringpal';
         $this->tab = 'payments_gateways';
         $this->version = '1.0.0';
-        $this->author = 'Arad Emertat';
+        $this->author = 'My add-ons';
         $this->need_instance = 0;
         $this->bootstrap = true;
 
         parent::__construct();
 
-        $this->displayName = $this->l('Arad Emertat ZarinPal Payment Gateway');
-        $this->description = $this->l('Arad Emertat Prestashop ZarinPal Payment Gateway');
+        $this->displayName = $this->l('ZarinPal Payment Gateway');
+        $this->description = $this->l('My add-ons ZarinPal Payment Gateway for Prestashop');
 
         $this->limited_countries = ['IR'];
 
