@@ -35,7 +35,7 @@ class Ps_pgzaringpal extends PaymentModule
         $this->name = 'ps_pgzaringpal';
         $this->tab = 'payments_gateways';
         $this->version = '1.0.0';
-        $this->author = 'My add-ons';
+        $this->author = 'MyAdd-ons';
         $this->need_instance = 0;
         $this->bootstrap = true;
 
