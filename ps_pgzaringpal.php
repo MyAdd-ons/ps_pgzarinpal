@@ -42,7 +42,7 @@ class Ps_pgzaringpal extends PaymentModule
         parent::__construct();
 
         $this->displayName = $this->l('ZarinPal Payment Gateway');
-        $this->description = $this->l('My add-ons ZarinPal Payment Gateway for Prestashop');
+        $this->description = $this->l('ZarinPal Payment Gateway for Prestashop');
 
         $this->limited_countries = ['IR'];
 
