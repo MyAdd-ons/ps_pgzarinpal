@@ -23,7 +23,7 @@
 *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
 */
-class Arademertat_payment_gateway_zarinpalConfirmationModuleFrontController extends ModuleFrontController
+class Ps_pgzarinpalConfirmationModuleFrontController extends ModuleFrontController
 {
     public function postProcess()
     {
