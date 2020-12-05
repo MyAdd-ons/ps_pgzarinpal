@@ -26,13 +26,13 @@
 
 defined('_PS_VERSION_') || exit;
 
-class Ps_pgzaringpal extends PaymentModule
+class Ps_pgzarinpal extends PaymentModule
 {
     protected $config_form = false;
 
     public function __construct()
     {
-        $this->name = 'ps_pgzaringpal';
+        $this->name = 'ps_pgzarinpal';
         $this->tab = 'payments_gateways';
         $this->version = '1.0.0';
         $this->author = 'MyAdd-ons';
