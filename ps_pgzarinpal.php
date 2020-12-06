@@ -52,6 +52,9 @@ class Ps_pgzarinpal extends PaymentModule
         ];
     }
 
+    /**
+     * check module requirement and compatibility install module requirement, models, extensions and tabs
+     */
     public function install()
     {
         if (extension_loaded('curl') == false)
@@ -73,14 +76,61 @@ class Ps_pgzarinpal extends PaymentModule
         return parent::install() &&
             $this->registerHook('paymentOptions') &&
             $this->registerHook('displayPayment') &&
-            $this->registerHook('displayPaymentReturn');
+            $this->registerHook('displayPaymentReturn') &&
+            $this->installTabs();
     }
 
+    /**
+     * uninstall module models and tabs
+     */
     public function uninstall()
     {
         include(dirname(__FILE__).'/sql/uninstall.php');
 
-        return parent::uninstall();
+        return parent::uninstall() &&
+            $this->unInstallTabs();
+    }
+
+    /**
+     * install module tabs in sidebar
+     */
+    private function installTabs()
+    {
+        $tabParent = new Tab();
+        $tabParent->name[$this->context->language->id] = $this->l($this->displayName);
+        $tabParent->class_name = 'ModuleConfiguration';
+        $tabParent->id_parent = 0;
+        $tabParent->module = $this->name;
+        $tabParent->save();
+
+        $tabSettings = new Tab();
+        $tabSettings->name[$this->context->language->id] = $this->l('Setting');
+        $tabSettings->class_name = 'ModuleConfiguration';
+        $tabSettings->icon = 'settings';
+        $tabSettings->id_parent = $tabParent->id;
+        $tabSettings->module = $this->name;
+        $tabSettings->save();
+
+        return true;
+    }
+
+    /**
+     * uninstall module tabs
+     */
+    private function unInstallTabs()
+    {
+        $moduleTabs = Tab::getCollectionFromModule($this->name);
+        if (!empty($moduleTabs)) {
+            foreach ($moduleTabs as $moduleTab) {
+                try {
+                    $moduleTab->delete();
+                } catch (PrestaShopException $e) {
+                    echo $e->getMessage();
+                }
+            }
+        }
+
+        return true;
     }
 
     /**
