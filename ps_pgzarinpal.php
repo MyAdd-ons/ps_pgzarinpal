@@ -29,7 +29,7 @@ defined('_PS_VERSION_') || exit;
 class Ps_pgzarinpal extends PaymentModule
 {
     protected $config_form = false;
-
+    const DEBUG_MODE = true;
     public function __construct()
     {
         $this->name = 'ps_pgzarinpal';
@@ -38,8 +38,8 @@ class Ps_pgzarinpal extends PaymentModule
         $this->author = 'MyAdd-ons';
         $this->need_instance = 0;
         $this->bootstrap = true;
-
         parent::__construct();
+
 
         $this->displayName = $this->l('ZarinPal Payment Gateway');
         $this->description = $this->l('ZarinPal Payment Gateway for Prestashop');
@@ -179,7 +179,7 @@ class Ps_pgzarinpal extends PaymentModule
             return;
         }
         $option = new \PrestaShop\PrestaShop\Core\Payment\PaymentOption();
-        $option->setCallToActionText($this->l('Pay offline'))
+        $option->setCallToActionText($this->l($this->displayName))
             ->setAction($this->context->link->getModuleLink($this->name, 'validation', array(), true));
 
         return [

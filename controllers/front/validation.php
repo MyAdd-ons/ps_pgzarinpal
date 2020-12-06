@@ -37,14 +37,17 @@ class Ps_pgzarinpalValidationModuleFrontController extends ModuleFrontController
         if ($this->module->active == false) {
             die;
         }
-
         /**
          * Since it is an example, we choose sample data,
          * You'll have to get the correct values :)
          */
-        $cart_id = 1;
-        $customer_id = 1;
-        $amount = 100.00;
+        $cart_id = $this->context->cart->id;
+        $customer_id = $this->context->cart->id_customer;
+        try {
+            $amount = $this->context->cart->getOrderTotal();
+        } catch (Exception $e) {
+        }
+        $message = $this->module->l('fuck u');
 
         /*
          * Restore the context from the $cart_id & the $customer_id to process the validation properly.
@@ -58,7 +61,7 @@ class Ps_pgzarinpalValidationModuleFrontController extends ModuleFrontController
 
         if ($this->isValidOrder() === true) {
             $payment_status = Configuration::get('PS_OS_PAYMENT');
-            $message = null;
+            //$message = null;
         } else {
             $payment_status = Configuration::get('PS_OS_ERROR');
 

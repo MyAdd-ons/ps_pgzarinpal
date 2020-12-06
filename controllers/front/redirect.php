@@ -34,15 +34,21 @@ class Ps_pgzarinpalRedirectModuleFrontController extends ModuleFrontController
          * Oops, an error occured.
          */
         if (Tools::getValue('action') == 'error') {
-            return $this->displayError('An error occurred while trying to redirect the customer');
+            try {
+                return $this->displayError('An error occurred while trying to redirect the customer');
+            } catch (Exception $e) {
+                dump($e);
+            }
         } else {
             $this->context->smarty->assign(array(
                 'cart_id' => Context::getContext()->cart->id,
                 'secure_key' => Context::getContext()->customer->secure_key,
             ));
 
-            return $this->setTemplate('redirect.tpl');
+            return $this->setTemplate('module:ps_pgzarinpal/views/templates/front/redirect.tpl');
         }
+
+        return true;
     }
 
     protected function displayError($message, $description = false)
@@ -58,7 +64,8 @@ class Ps_pgzarinpalRedirectModuleFrontController extends ModuleFrontController
          * Set error message and description for the template.
          */
         array_push($this->errors, $this->module->l($message), $description);
+        $this->context->smarty->assign('errors', $this->errors);
 
-        return $this->setTemplate('error.tpl');
+        return $this->setTemplate('module:ps_pgzarinpal/views/templates/front/error.tpl');
     }
 }

@@ -24,22 +24,22 @@
 *}
 
 <div>
-	<h3>{l s='Redirect your customer' mod='prestashop_payment_gateway_zarinpal'}:</h3>
+	<h3>{l s='Redirect your customer' mod='ps_pgzarinpal'}:</h3>
 	<ul class="alert alert-info">
-			<li>{l s='This action should be used to redirect your customer to the website of your payment processor' mod='prestashop_payment_gateway_zarinpal'}.</li>
+			<li>{l s='This action should be used to redirect your customer to the website of your payment processor' mod='ps_pgzarinpal'}.</li>
 	</ul>
 	
 	<div class="alert alert-warning">
-		{l s='You can redirect your customer with an error message' mod='prestashop_payment_gateway_zarinpal'}:
-		<a href="{$link->getModuleLink('prestashop_payment_gateway_zarinpal', 'redirect', ['action' => 'error'], true)|escape:'htmlall':'UTF-8'}" title="{l s='Look at the error' mod='prestashop_payment_gateway_zarinpal'}">
-			<strong>{l s='Look at the error message' mod='prestashop_payment_gateway_zarinpal'}</strong>
+		{l s='You can redirect your customer with an error message' mod='ps_pgzarinpal'}:
+		<a href="{$link->getModuleLink('ps_pgzarinpal', 'redirect', ['action' => 'error'], true)|escape:'htmlall':'UTF-8'}" title="{l s='Look at the error' mod='ps_pgzarinpal'}">
+			<strong>{l s='Look at the error message' mod='ps_pgzarinpal'}</strong>
 		</a>
 	</div>
 	
 	<div class="alert alert-success">
-		{l s='You can also redirect your customer to the confirmation page' mod='prestashop_payment_gateway_zarinpal'}:
-		<a href="{$link->getModuleLink('prestashop_payment_gateway_zarinpal', 'confirmation', ['cart_id' => $cart_id, 'secure_key' => $secure_key], true)|escape:'htmlall':'UTF-8'}" title="{l s='Confirm' mod='prestashop_payment_gateway_zarinpal'}">
-			<strong>{l s='Go to the confirmation page' mod='prestashop_payment_gateway_zarinpal'}</strong>
+		{l s='You can also redirect your customer to the confirmation page' mod='ps_pgzarinpal'}:
+		<a href="{$link->getModuleLink('ps_pgzarinpal', 'confirmation', ['cart_id' => $cart_id, 'secure_key' => $secure_key], true)|escape:'htmlall':'UTF-8'}" title="{l s='Confirm' mod='ps_pgzarinpal'}">
+			<strong>{l s='Go to the confirmation page' mod='ps_pgzarinpal'}</strong>
 		</a>
 	</div>
 </div>
