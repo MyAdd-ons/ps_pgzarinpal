@@ -81,7 +81,7 @@ class Ps_pgzarinpal extends PaymentModule
     }
 
     /**
-     * uninstall module models and tabs
+     * Uninstall module models and tabs.
      */
     public function uninstall()
     {
