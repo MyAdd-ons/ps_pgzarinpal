@@ -53,7 +53,7 @@ class Ps_pgzarinpal extends PaymentModule
     }
 
     /**
-     * check module requirement and compatibility install module requirement, models, extensions and tabs
+     * Installs module requirements, such as hooks, models, etc.
      */
     public function install()
     {
