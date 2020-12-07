@@ -52,6 +52,9 @@ class Ps_pgzarinpal extends PaymentModule
         ];
     }
 
+    /**
+     * Installs module requirements, such as hooks, models, etc.
+     */
     public function install()
     {
         if (extension_loaded('curl') == false)
@@ -73,14 +76,68 @@ class Ps_pgzarinpal extends PaymentModule
         return parent::install() &&
             $this->registerHook('paymentOptions') &&
             $this->registerHook('displayPayment') &&
-            $this->registerHook('displayPaymentReturn');
+            $this->registerHook('displayPaymentReturn') &&
+            $this->installTabs();
     }
 
+    /**
+     * Uninstall module models and tabs.
+     */
     public function uninstall()
     {
         include(dirname(__FILE__).'/sql/uninstall.php');
 
-        return parent::uninstall();
+        $form_values = $this->getConfigForm();
+
+        foreach ($form_values['form']['input'] as $key) {
+            $key = $key['name'];
+            Configuration::deleteByName($key);
+        }
+
+        return parent::uninstall() &&
+            $this->unInstallTabs();
+    }
+
+    /**
+     * install module tabs in sidebar
+     */
+    private function installTabs()
+    {
+        $tabParent = new Tab();
+        $tabParent->name[$this->context->language->id] = $this->l($this->displayName);
+        $tabParent->class_name = 'ModuleConfiguration';
+        $tabParent->id_parent = 0;
+        $tabParent->module = $this->name;
+        $tabParent->save();
+
+        $tabSettings = new Tab();
+        $tabSettings->name[$this->context->language->id] = $this->l('Setting');
+        $tabSettings->class_name = 'ModuleConfiguration';
+        $tabSettings->icon = 'settings';
+        $tabSettings->id_parent = $tabParent->id;
+        $tabSettings->module = $this->name;
+        $tabSettings->save();
+
+        return true;
+    }
+
+    /**
+     * Uninstall module tabs.
+     */
+    private function unInstallTabs()
+    {
+        $moduleTabs = Tab::getCollectionFromModule($this->name);
+        if (!empty($moduleTabs)) {
+            foreach ($moduleTabs as $moduleTab) {
+                try {
+                    $moduleTab->delete();
+                } catch (PrestaShopException $e) {
+                    echo $e->getMessage();
+                }
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -91,13 +148,37 @@ class Ps_pgzarinpal extends PaymentModule
         /**
          * If values have been submitted in the form, process.
          */
-        if (((bool)Tools::isSubmit('submit')) == true) {
+        if (((bool)Tools::isSubmit('saveSetting')) == true) {
             $this->postProcess();
         }
 
-        $this->context->smarty->assign('module_dir', $this->_path);
+        return $this->getMessages() . $this->renderForm();
+    }
 
-        return $this->renderForm();
+    /**
+     * Display error and confirmation messages
+     *
+     * @return string
+     */
+    private function getMessages()
+    {
+        $messages = '';
+
+        if ( count($this->getErrors()) ) {
+            $messages .= $this->displayError($this->getErrors());
+        }
+
+        if ( count($this->getConfirmations()) ) {
+            $confirmMessage = '';
+
+            foreach ($this->getConfirmations() as $confirmation) {
+                $confirmMessage .= $confirmation . "<br />";
+            }
+
+            $messages .= $this->displayConfirmation($confirmMessage);
+        }
+
+        return $messages;
     }
 
     /**
@@ -114,7 +195,7 @@ class Ps_pgzarinpal extends PaymentModule
         $helper->allow_employee_form_lang = Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG', 0);
 
         $helper->identifier = $this->identifier;
-        $helper->submit_action = 'submit';
+        $helper->submit_action = 'saveSetting';
         $helper->currentIndex = $this->context->link->getAdminLink('AdminModules', false)
             .'&configure='.$this->name.'&tab_module='.$this->tab.'&module_name='.$this->name;
         $helper->token = Tools::getAdminTokenLite('AdminModules');
@@ -133,14 +214,59 @@ class Ps_pgzarinpal extends PaymentModule
      */
     protected function getConfigForm()
     {
-        return array(
-            'form' => array(
-                'legend' => array(
-                'title' => $this->l('Settings'),
-                'icon' => 'icon-cogs',
-                ),
-            ),
-        );
+        return [
+            'form' => [
+                'legend' => [
+                'title'  => $this->l('Settings'),
+                'icon'   => 'icon-cogs',
+                ],
+                'input' => [
+                    [
+                        'type'  => 'text',
+                        'col'   => 3,
+                        'label' => $this->l('Merchant ID'),
+                        'name'  => 'ZARINPAL_MERCHANT_ID',
+                        'size'  => 36,
+                        'required' => true,
+                        'placeholder' => 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
+                    ],
+                    [
+                        'type'   => 'switch',
+                        'label'  => $this->l('Zarin Gate ? '),
+                        'name'   => 'ZARINPAL_ZARINGATE',
+                        'desc'   => $this->l('User will directly move to payment gateway'),
+                        'values' => [
+                            [
+                                'value' => 0,
+                            ],
+                            [
+                                'value' => 1,
+                            ],
+                        ],
+
+                    ],
+                    [
+                        'type'   => 'switch',
+                        'label'  => $this->l('Sand Box ? '),
+                        'name'   => 'ZARINPAL_SANDBOX',
+                        'desc'   => $this->l('Payment simulator environment '),
+                        'hint' => $this->l('( Sandbox mode represents a test environment that allows to order without really paying for it ) ( Enable it just for test purposes ) ( !Do not enable it if your shop is online ) '),
+                        'values' => [
+                            [
+                                'value' => 0,
+                            ],
+                            [
+                                'value' => 1,
+                            ],
+                        ],
+                    ],
+                ],
+                'submit'    => [
+                    'title' => $this->l('Save Setting'),
+                    'name'  => 'saveSetting'
+                ],
+            ],
+        ];
     }
 
     /**
@@ -148,7 +274,15 @@ class Ps_pgzarinpal extends PaymentModule
      */
     protected function getConfigFormValues()
     {
-        return array();
+        $fields = [];
+        $form_values = $this->getConfigForm();
+
+        foreach ($form_values['form']['input'] as $key) {
+            $key = $key['name'];
+            $fields[$key] = Configuration::get($key);
+        }
+
+        return $fields;
     }
 
     /**
@@ -156,11 +290,19 @@ class Ps_pgzarinpal extends PaymentModule
      */
     protected function postProcess()
     {
-        $form_values = $this->getConfigFormValues();
+        $form_values = $this->getConfigForm();
 
-        foreach (array_keys($form_values) as $key) {
-            Configuration::updateValue($key, Tools::getValue($key));
+        $res = [];
+
+        foreach ($form_values['form']['input'] as $key) {
+            $key = $key['name'];
+            $res[] = Configuration::updateValue($key, Tools::getValue($key));
         }
+
+        if ( in_array(0, $res) )
+            $this->_errors[] = $this->l('Failed to save setting');
+        else
+            $this->_confirmations[] = $this->l('Configuration saved successfully');
     }
 
     /**
