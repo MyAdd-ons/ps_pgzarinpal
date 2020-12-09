@@ -25,9 +25,12 @@
 */
 $sql = array();
 
-$sql[] = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'ps_pgzarinpal` (
-    `id_ps_pgzarinpal` int(11) NOT NULL AUTO_INCREMENT,
-    PRIMARY KEY  (`id_ps_pgzarinpal`)
+$sql[] = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'pgzarinpal` (
+    `id_pgzarinpal` int(11) NOT NULL AUTO_INCREMENT,
+    `cart_id` int(11) NOT NULL,
+    `authority` text NOT NULL,
+    `date_add` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY  (`id_pgzarinpal`)
 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
 
 foreach ($sql as $query) {
