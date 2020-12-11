@@ -31,7 +31,7 @@
  */
 $sql = array();
 
-$sql[] = 'DROP TABLE `' . _DB_PREFIX_ . 'id_ps_pgzarinpal`;';
+$sql[] = 'DROP TABLE `' . _DB_PREFIX_ . 'pgzarinpal`;';
 
 foreach ($sql as $query) {
     if (Db::getInstance()->execute($query) == false) {
