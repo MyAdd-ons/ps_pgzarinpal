@@ -26,6 +26,8 @@
 
 defined('_PS_VERSION_') || exit;
 
+require_once(dirname(__FILE__).'/models/PgzarinpalModel.php');
+
 class Ps_pgzarinpal extends PaymentModule
 {
     protected $config_form = false;
@@ -71,7 +73,7 @@ class Ps_pgzarinpal extends PaymentModule
             return false;
         }
 
-        include(dirname(__FILE__).'/sql/install.php');
+        require_once(dirname(__FILE__).'/sql/install.php');
 
         return parent::install() &&
             $this->registerHook('paymentOptions') &&
@@ -85,7 +87,7 @@ class Ps_pgzarinpal extends PaymentModule
      */
     public function uninstall()
     {
-        include(dirname(__FILE__).'/sql/uninstall.php');
+        require_once(dirname(__FILE__).'/sql/uninstall.php');
 
         $form_values = $this->getConfigForm();
 
@@ -321,7 +323,7 @@ class Ps_pgzarinpal extends PaymentModule
             return;
         }
         $option = new \PrestaShop\PrestaShop\Core\Payment\PaymentOption();
-        $option->setCallToActionText($this->l('Pay offline'))
+        $option->setCallToActionText($this->l($this->displayName))
             ->setAction($this->context->link->getModuleLink($this->name, 'validation', array(), true));
 
         return [
