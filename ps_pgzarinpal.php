@@ -27,6 +27,7 @@
 defined('_PS_VERSION_') || exit;
 
 require_once(dirname(__FILE__).'/models/PgzarinpalModel.php');
+require_once(dirname(__FILE__).'/tools/ZarinPalGateway.php');
 
 class Ps_pgzarinpal extends PaymentModule
 {
