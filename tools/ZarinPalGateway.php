@@ -327,7 +327,7 @@ class ZarinPalGateway
      *
      * @return float|int
      */
-    public function convertToIrt($amount)
+    public function convertToIRT($amount)
     {
         return (int)$amount / 10;
     }
