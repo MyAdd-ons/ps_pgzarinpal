@@ -53,7 +53,7 @@ class ZarinPalGateway
     private $callback;
 
     /**
-     * shop current currency
+     * Shop current currency
      * @var boolean
      */
     private $currency = false;
