@@ -300,7 +300,7 @@ class ZarinPalGateway
     /**
      * Convert IRR to IRT
      *
-     * @param int|string|float $amount
+     * @param int|float|string $amount
      *
      * @return float|int
      */
