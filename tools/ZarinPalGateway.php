@@ -184,7 +184,7 @@ class ZarinPalGateway
             return false;
         }
 
-        //Convert IRR to IRT because ZarinPal excepts just IRT
+        //Convert IRR to IRT because ZarinPal accepts just IRT
         if ($this->currency == "IRR") {
             $amount = $this->convertToIrt($amount);
         }
