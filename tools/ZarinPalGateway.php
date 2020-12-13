@@ -186,7 +186,7 @@ class ZarinPalGateway
 
         //Convert IRR to IRT because ZarinPal accepts just IRT
         if ($this->currency == "IRR") {
-            $amount = $this->convertToIrt($amount);
+            $amount = $this->convertToIRT($amount);
         }
 
         //Gate payment verification data
