@@ -90,7 +90,7 @@ class ZarinPalGateway
 
         //Convert IRR to IRT because ZarinPal excepts just IRT
         if ($this->currency == "IRR") {
-            $amount = $this->convertToIrt($amount);
+            $amount = $this->convertToIRT($amount);
         }
 
         //Gate data
