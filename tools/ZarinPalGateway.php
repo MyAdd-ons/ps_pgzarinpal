@@ -232,7 +232,7 @@ class ZarinPalGateway
     }
 
     /**
-     * Handel ZarinPal errors
+     * Handle ZarinPal errors
      * Return error message if there is an error
      *
      * @return bool|string
